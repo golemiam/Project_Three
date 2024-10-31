@@ -1,0 +1,35 @@
+//package p03;
+public class Experiment {
+    private int number;
+    private String name;
+    private int weight;
+    private int rating;
+
+    public Experiment(int number, String name, int weight, int rating) {
+        this.number = number;
+        this.name = name;
+        this.weight = weight;
+        this.rating = rating;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    @Override
+    public String toString() {
+        return "Experiment #" + number + ": " + name + " (Weight: " + weight + " kg, Rating: " + rating + ")";
+    }
+}
