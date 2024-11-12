@@ -1,0 +1,39 @@
+public class RatedObjects {
+		String name;
+		int weight;
+		int rating;
+		
+		public RatedObjects(String name, int weight, int rating) {
+			this.name = name;
+			this.weight = weight;
+			this.rating = rating;
+		}
+		
+		//Getter methods
+		//Returns the weight
+		public String sayName() {
+			return name;
+		}
+		
+		//Returns the weight
+		public int getWeight() {
+			return weight;
+		}
+		
+		//Returns the rating
+		public int getRating() {
+			return rating;
+		}
+		
+		//Returns a ratio of the object (weight / rating)
+		public int getRatio() {
+			return weight / rating;
+		}
+		
+		//Setters
+		
+		//Override toString for better reading.
+		public String toString() {
+			return "Name: " + name + " Weight: " + weight + " Rating: " + rating;
+		}
+}
