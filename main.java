@@ -6,11 +6,9 @@ public class TestClientDynamic {
 	
 	public static void main(String[] args) {
 		
-		//Input all of the info... There is probably a better way of doing this. 
-		//3 arrays and a loop would probably be more compact.
-		
+		//Input all of the info... There is probably a better way of doing this. i.e. 3 arrays and a loop would probably be more compact.
 		RatedObjects[] items = extracted();			
-
+		
 		/* Testing
 		//Original Array
 		for (int i = 0; i < items.length; i++) {
@@ -19,8 +17,12 @@ public class TestClientDynamic {
 		}
 		*/
 		
+		fillWeight(items);
+		System.out.println();
+		fillRating(items);
 		System.out.println();
 		fillRatio(items);
+		System.out.println();
 	}
 
 	/**
@@ -42,19 +44,20 @@ public class TestClientDynamic {
 		RatedObjects cosmicRays = new RatedObjects("Cosmic Rays", 80, 7);
 		RatedObjects yeastFermantation = new RatedObjects("Yeast Fermentation", 27, 4);
 		
-		//We'll want to manipulate the the array in other methods.
+		//Building the array of the base items we have.
 		RatedObjects[] items = {cloudPatterns, solarFlares, solarPower, binaryStars, relativity, seedViability, sunSpots, miceTumors, microPlant, micrometeors, cosmicRays, yeastFermantation};
 		
 		return items;
 	}
 
-	//Weight Method
+
+//Weight Method
 	/**
-	 * @param Array of Items
+	 * @param Array of RatedObjects
 	 */
 	static void fillWeight(RatedObjects[] items){
 		
-		//ArrayList because we don't know how many objects will be added
+		//ArrayList: We don't know how many objects will be added
 		ArrayList<RatedObjects> returnedItems = new ArrayList<RatedObjects>();
 		
 		//Total Weight and Rating
@@ -75,12 +78,12 @@ public class TestClientDynamic {
 		//Loop while totalWeight is below threshold (700) and there are more objects that can be added
 		while(totalWeight < 700 && noMore == false) {
 			
-			//If current == length there are no more objects that can be added
-			if (current == items.length) {
+			//If current == length there are no more objects in the array to look at
+			if (current == items.length-1) {
 				noMore = true;
 			}
 			
-			//If current total weight + new item weight < 700 add the item and its weight + rating
+			//If current total weight + new item weight < 700 add the item, its weight and rating
 			else if(items[current].getWeight() + totalWeight < 700) {
 				returnedItems.add(items[current]);
 				totalWeight += items[current].getWeight();
@@ -104,11 +107,11 @@ public class TestClientDynamic {
 
 //Rating Method
 	/**
-	 * @param Array of Items
+	 * @param Array of RatedObjects
 	 */
 	static void fillRating(RatedObjects[] items){
 		
-		//ArrayList because we don't know how many objects will be added		
+		//ArrayList: We don't know how many objects will be added		
 		ArrayList<RatedObjects> returnedItems = new ArrayList<RatedObjects>();
 		
 		//Total Weight and Rating
@@ -134,7 +137,7 @@ public class TestClientDynamic {
 				noMore = true;
 			}
 			
-			//If current total weight + new item weight < 700 add the item and its weight + rating
+			//If current total weight + new item weight < 700 add the item, its weight, and its rating
 			if(items[current].getWeight() + totalWeight < 700) {
 				returnedItems.add(items[current]);
 				totalWeight += items[current].getWeight();
@@ -145,11 +148,12 @@ public class TestClientDynamic {
 			current -= 1;
 		}
 		
+		//Print out our total weight and rating
 		System.out.println("Weight:" + totalWeight);
 		System.out.println("Rating:" + totalRating);
 		
 		
-		//Print out items
+		//Print out items added to return array
 		for (int j = 0; j < returnedItems.size(); j++) {
 			System.out.println(returnedItems.get(j));
 		}
@@ -157,16 +161,19 @@ public class TestClientDynamic {
 	
 
 //Ratio Method
-static void fillRatio(RatedObjects[] items){
+	/**
+	 * @param Array of RatedObjects
+	 */
+	static void fillRatio(RatedObjects[] items){
 		
-		//ArrayList because we don't know how many objects will be added		
+		//ArrayList: We don't know how many objects will be added		
 		ArrayList<RatedObjects> returnedItems = new ArrayList<RatedObjects>();
 		
 		//Total Weight and Rating
 		int totalWeight = 0;
 		int totalRating = 0;
 		
-		//Current position in the array, we want the largest first so we start at the end
+		//Current position in the array
 		int current = 0;
 		
 		//Check if we are at the end of the array (No more objects to add)
@@ -199,7 +206,7 @@ static void fillRatio(RatedObjects[] items){
 		System.out.println("Rating:" + totalRating);
 		
 		
-		//Print out items
+		//Print out items in return Array
 		for (int j = 0; j < returnedItems.size(); j++) {
 			System.out.println(returnedItems.get(j));
 		}
