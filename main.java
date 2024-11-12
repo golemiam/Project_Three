@@ -2,7 +2,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ArrayList;
 
-
 public class TestClientDynamic {
 	
 	public static void main(String[] args) {
@@ -11,8 +10,8 @@ public class TestClientDynamic {
 		//3 arrays and a loop would probably be more compact.
 		
 		RatedObjects[] items = extracted();			
-		
-		/*
+
+		/* Testing
 		//Original Array
 		for (int i = 0; i < items.length; i++) {
 			System.out.println(items[i] + "  Ratio:  " + items[i].getRatio());
@@ -20,14 +19,9 @@ public class TestClientDynamic {
 		}
 		*/
 		
-		
 		System.out.println();
-		
 		fillRatio(items);
-		
-		
 	}
-
 
 	/**
 	 * @return Our Array of objects
@@ -53,7 +47,6 @@ public class TestClientDynamic {
 		
 		return items;
 	}
-
 
 	//Weight Method
 	/**
