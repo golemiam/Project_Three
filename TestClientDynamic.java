@@ -1,47 +1,28 @@
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Demonstrating solutions to the Knapsack Problem using several methods.
+ * Sorting and choosing objects based on weight, rating, and weight/rating
+ * ratio.
+ * A brute-force approach to find the combination of items that maximizes the
+ * rating
+ * while staying within the weight limit.
+ * 
+ * @author Daniel Frear
+ */
 public class TestClientDynamic {
 
-	public static void main(String[] args) {
-
-		// Input all of the info... There is probably a better way of doing this. i.e. 3
-		// arrays and a loop would probably be more compact.
-		RatedObjects[] items = extracted();
-
-		/*
-		 * Testing
-		 * //Original Array
-		 * for (int i = 0; i < items.length; i++) {
-		 * System.out.println(items[i] + "  Ratio:  " + items[i].getRatio());
-		 * System.out.println();
-		 * }
-		 */
-
-		fillWeight(items);
-		System.out.println();
-		fillRating(items);
-		System.out.println();
-		fillRatio(items);
-		System.out.println();
-
-		// brute force
-
-		// TODO- i'll clean up, organize output before video - (jose)
-		System.out.println("brute force");
-		
-		System.out.println("Brute force using recursive method");
-		int capacity = 700; // Your weight limit
-		int n = items.length; // Total number of items
-		int maxRating = bruteForce(items, capacity, n);
-
-		System.out.println("Maximum rating achievable: " + maxRating);
-
-	}
-
 	/**
-	 * @return Our Array of objects
+	 * 
+	 * 
+	 * - A constructor to initialize the name, weight, and rating of the object.
+	 * - Getter methods for retrieving the name, weight, and rating.
+	 * - A method to compute the ratio of weight to rating.
+	 * 
+	 * @author Daniel Frear
 	 */
 	public static RatedObjects[] extracted() {
 
@@ -225,26 +206,115 @@ public class TestClientDynamic {
 		}
 	}
 
-	/* Brute-Force Method
-	TODO -- finish commenting code, before video -(jose) 
- 	* W3 school inspired brute force, edited to fit project parameters
-	*/
-	public static int bruteForce(RatedObjects[] items, int capacity, int n) {
-		// Base case, NO items left or capacity is 0(maxxed)
+	//////// Brute-Force Method ////////
+
+	/**
+	 * Solves the knapsack problem using a bruteforce approach.
+	 *
+	 * Finds all possible combinations of items to find the one
+	 * that maximizes the total rating without going over the weight limit.
+	 * It considers two choices for each item: either include the item in the
+	 * current selection or exclude it. The maximum rating of these two options
+	 * is returned as the result. https://www.w3schools.com/dsa/dsa_ref_knapsack.php
+	 * inspired the approach.
+	 *
+	 * @param items       array of RatedObjects
+	 * @param capacity    The remaining weight capacit
+	 * @param n           The number of items left
+	 * @param currentList The current list of selected items
+	 * @param bestList    The list of items that provide the highest rating.
+	 * 
+	 * @return The max rating with the given capacity and items.
+	 * 
+	 * @author Jose Ojeda
+	 * @author Robbie PLatt
+	 */
+	public static int bruteForce(RatedObjects[] items, int capacity, int n, List<RatedObjects> currentList,
+			List<RatedObjects> bestList) {
+
+		// Base case, no items left or capacity is 0 (maxxed out)
 		if (n == 0 || capacity == 0) {
-			return 0;
+			int currentRating = getTotalRating(currentList);
+			if (currentRating > getTotalRating(bestList)) {
+				bestList.clear();
+				bestList.addAll(currentList);
+			}
+			return currentRating;
 		}
 
-		// if items weight < capacity then include it (capacity-current item's weight)
+		// If the weight of an item is more than remaining capacity, skip it
 		if (items[n - 1].getWeight() > capacity) {
-			return bruteForce(items, capacity, n - 1);
-		} else {
-			// Calculate the max value by either including or excluding the nth item
-			int include_item = items[n - 1].getRating() +
-					bruteForce(items, capacity - items[n - 1].getWeight(), n - 1);
-			int exclude_item = bruteForce(items, capacity, n - 1);
-
-			return Math.max(include_item, exclude_item);
+			return bruteForce(items, capacity, n - 1, currentList, bestList);
 		}
+
+		// Include the an item
+		currentList.add(items[n - 1]);
+		int includeRating = bruteForce(items, capacity - items[n - 1].getWeight(), n - 1, currentList, bestList);
+
+		// Remove the item after considering it
+		currentList.remove(currentList.size() - 1);
+
+		// Option 2: Exclude the nth item
+		int excludeRating = bruteForce(items, capacity, n - 1, currentList, bestList);
+
+		// Return the maximum of including or excluding the item
+		return Math.max(includeRating, excludeRating);
+	}
+
+	private static int getTotalRating(List<RatedObjects> items) {
+		int totalRating = 0;
+		for (RatedObjects item : items) {
+			totalRating += item.getRating();
+		}
+		return totalRating;
+	}
+
+	public static void main(String[] args) {
+
+		// Input all of the info... There is probably a better way of doing this. i.e. 3
+		// arrays and a loop would probably be more compact.
+		RatedObjects[] items = extracted();
+
+		/*
+		 * Testing
+		 * //Original Array
+		 * for (int i = 0; i < items.length; i++) {
+		 * System.out.println(items[i] + "  Ratio:  " + items[i].getRatio());
+		 * System.out.println();
+		 * }
+		 */
+
+		System.out.println("Heaviest Objects");
+		fillWeight(items);
+
+		System.out.println();
+
+		System.out.println("Best Rating Objects");
+		fillRating(items);
+		System.out.println();
+
+		System.out.println();
+
+		System.out.println("Objects with best weight/rating ratio;");
+		fillRatio(items);
+		System.out.println();
+
+		// brute force
+
+		System.out.println("Brute force method");
+		int capacity = 700; // weight limit
+		int n = items.length; // Total number of items
+		List<RatedObjects> currentList = new ArrayList<>();
+		List<RatedObjects> bestList = new ArrayList<>();
+
+		int maxRating = bruteForce(items, capacity, n, currentList, bestList);
+
+		System.out.println("Best rating possible: " + maxRating);
+		System.out.println("Items included:");
+
+		for (RatedObjects item : bestList) {
+			System.out.println(item);
+		}
+
 	}
 }
