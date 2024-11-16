@@ -284,7 +284,7 @@ public class TestClientDynamic {
 		 * }
 		 */
 
-		System.out.println("Heaviest Objects");
+		System.out.println("Lightest Objects");
 		fillWeight(items);
 
 		System.out.println();
